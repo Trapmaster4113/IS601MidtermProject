@@ -46,12 +46,12 @@ class Calculation:
             if y != 0
             else self._raise_div_zero()),
             "idiv": lambda x,y: Decimal(int(x) // int(y))
-            if isinstance(x, int) and isinstance(y,int) and y != 0
+            if y != 0
             else self._raise_div_zero(),
             "perc" : lambda x, y: Decimal(x / y * 100)
             if y != 0
             else self.raise_div_zero(),
-            "abs" : lambda x, y: Decimal(abs(x) - abs(y)),
+            "absv" : lambda x, y: Decimal(abs(x-y)),
         }
         op = operations.get(self.operation)
         if not op:

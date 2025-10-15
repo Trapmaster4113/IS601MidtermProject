@@ -11,7 +11,7 @@ from app.history import AutoSaveObserver, LoggingObserver
 from app.operations import OperationFactory
 
 
-def calculator_repl():
+def Calculator_repl():
     """
     Command-line interface for the calculator.
 
@@ -36,7 +36,7 @@ def calculator_repl():
                 if command == 'help':
                     # Display available commands
                     print("\nAvailable commands:")
-                    print("  add, subtract (sub), multiply (mult), divide (div), power (exp), root, modulus (mod), integer division (idiv), percentage(perc), absolute difference (abs) - Perform calculations")
+                    print("  add, subtract (sub), multiply (mult), divide (div), power (exp), root, modulus (mod), integer division (idiv), percentage(perc), absolute difference (absv) - Perform calculations")
                     print("  history - Show calculation history")
                     print("  clear - Clear calculation history")
                     print("  undo - Undo the last calculation")
@@ -107,7 +107,7 @@ def calculator_repl():
                         print(f"Error loading history: {e}")
                     continue
 
-                if command in ['add', 'sub', 'mult', 'div', 'exp', 'root', 'idiv', 'exp','mod', 'percent','abs']:
+                if command in ['add', 'sub', 'mult', 'div', 'exp', 'root', 'idiv', 'exp','mod', 'perc','absv']:
                     # Perform the specified arithmetic operation
                     try:
                         print("\nEnter numbers (or 'cancel' to abort):")

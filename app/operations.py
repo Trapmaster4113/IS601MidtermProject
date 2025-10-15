@@ -6,41 +6,41 @@ class Operation(ABC):
     @abstractmethod
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
         pass
-    def validateOperands(self, a: Decimal, b: Decimal) -> None:
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
         pass
     def __str__(self) -> str:
         return self.__class__.__name__
     
 class add(Operation):
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
-        self.validateOperands(a,b)
+        self.validate_operands(a,b)
         return a + b
 class sub(Operation):
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
-        self.validateOperands(a,b)
+        self.validate_operands(a,b)
         return a - b
 class mult(Operation):
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
-        self.validateOperands(a,b)
+        self.validate_operands(a,b)
         return a * b
 class div(Operation):
-    def validateOperands(self, a, b) -> None:
-        super().validateOperands(a, b)
+    def validate_operands(self, a, b) -> None:
+        super().validate_operands(a, b)
         if b == 0:
             raise ValidationError("Division by zero is not allowed")
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
-        self.validateOperands(a,b)
+        self.validate_operands(a,b)
         return a / b
 class exp(Operation):
-    def validateOperands(self, a, b) -> None:
-        super().validateOperands(a, b)
+    def validate_operands(self, a, b) -> None:
+        super().validate_operands(a, b)
         if b < 0:
             raise ValidationError("Negative exponents are not supported")
     def execute(self, a, b) -> Decimal:
         return Decimal(pow(float(a),float(b)))
 class root(Operation):
-    def validateOperands(self, a, b) -> None:
-        super().validateOperands(a, b)
+    def validate_operands(self, a, b) -> None:
+        super().validate_operands(a, b)
         if a < 0:
             raise ValidationError("Cannot calculate root of negative number")
         if b == 0:
@@ -49,31 +49,32 @@ class root(Operation):
         self.validate_operands(a, b)
         return Decimal(pow(float(a), 1 / float(b)))
 class mod(Operation):
-    def validateOperands(self, a, b) -> None:
-        super().validateOperands(a, b)
+    def validate_operands(self, a, b) -> None:
+        super().validate_operands(a, b)
         if b == 0:
             raise ValidationError("Division by zero is not allowed")
     def execute(self, a, b) -> Decimal:
+        self.validate_operands(a, b)
         return a % b
 class idiv(Operation):
-    def validateOperands(self, a, b) -> None:
-        super().validateOperands(a, b)
+    def validate_operands(self, a, b) -> None:
+        super().validate_operands(a, b)
         if b == 0:
             raise ValidationError("Division by zero is not allowed")
-        if not isinstance(a, int) or not isinstance(b, int):
-            raise ValidationError("Invalid Inputs: Must be Integers")
     def execute(self, a, b) -> int:
+        self.validate_operands(a, b)
         return int(a)//int(b)
 class perc(Operation):
-    def validateOperands(self, a, b) -> None:
-        super().validateOperands(a, b)
+    def validate_operands(self, a, b) -> None:
+        super().validate_operands(a, b)
         if b == 0:
             raise ValidationError("Division by zero is not allowed")
     def execute(self, a, b) -> Decimal:
-        return a / b * 100
-class abs(Operation):
+        self.validate_operands(a, b)
+        return (a / b) * 100
+class absv(Operation):
     def execute(self, a, b) -> Decimal:
-        return abs(a) - abs(b)
+        return abs(a-b)
 class OperationFactory:
     """
     Factory class for creating operation instances.
@@ -92,7 +93,7 @@ class OperationFactory:
         'mod' : mod,
         'idiv': idiv,
         'perc' : perc,
-        'abs' : abs,
+        'absv' : absv,
     }
     @classmethod
     def register_operation(cls, name: str, operation_class: type) -> None:

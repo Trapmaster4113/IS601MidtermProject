@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch, PropertyMock
 from decimal import Decimal
 from tempfile import TemporaryDirectory
 from app.calculator import Calculator
-from app.calculator_repl import calculator_repl
+from app.calculator_repl import Calculator_repl
 from app.calculator_config import CalculatorConfig
 from app.exceptions import OperationError, ValidationError
 from app.history import LoggingObserver, AutoSaveObserver
@@ -36,11 +36,11 @@ def calculator():
 
 # Test Calculator Initialization
 
-def test_calculator_initialization(calculator):
-    assert calculator.history == []
-    assert calculator.undo_stack == []
-    assert calculator.redo_stack == []
-    assert calculator.operation_strategy is None
+def test_calculator_initialization(Calculator):
+    assert Calculator.history == []
+    assert Calculator.undo_stack == []
+    assert Calculator.redo_stack == []
+    assert Calculator.operation_strategy is None
 
 # Test Logging Setup
 

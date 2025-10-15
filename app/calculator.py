@@ -35,7 +35,7 @@ class Calculator:
         self._setup_logging()
 
         self.history: List[Calculation] = []
-        self.operation_stratetgy: Optional[Operation] = None
+        self.operation_strategy: Optional[Operation] = None
         self.observers: List[HistoryObserver] = []
 
         self.undo_stack: List[CalculatorMemento] = []

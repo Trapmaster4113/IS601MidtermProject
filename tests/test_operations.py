@@ -5,12 +5,15 @@ from typing import Any, Dict, Type
 from app.exceptions import ValidationError
 from app.operations import (
     Operation,
-    Addition,
-    Subtraction,
-    Multiplication,
-    Division,
-    Power,
-    Root,
+    add,
+    sub,
+    mult,
+    div,
+    exp,
+    root,
+    idiv,
+    perc,
+    abs,
     OperationFactory,
 )
 
@@ -60,7 +63,7 @@ class BaseOperationTest:
 class TestAddition(BaseOperationTest):
     """Test Addition operation."""
 
-    operation_class = Addition
+    operation_class = add
     valid_test_cases = {
         "positive_numbers": {"a": "5", "b": "3", "expected": "8"},
         "negative_numbers": {"a": "-5", "b": "-3", "expected": "-8"},
@@ -79,7 +82,7 @@ class TestAddition(BaseOperationTest):
 class TestSubtraction(BaseOperationTest):
     """Test Subtraction operation."""
 
-    operation_class = Subtraction
+    operation_class = sub
     valid_test_cases = {
         "positive_numbers": {"a": "5", "b": "3", "expected": "2"},
         "negative_numbers": {"a": "-5", "b": "-3", "expected": "-2"},
@@ -98,7 +101,7 @@ class TestSubtraction(BaseOperationTest):
 class TestMultiplication(BaseOperationTest):
     """Test Multiplication operation."""
 
-    operation_class = Multiplication
+    operation_class = mult
     valid_test_cases = {
         "positive_numbers": {"a": "5", "b": "3", "expected": "15"},
         "negative_numbers": {"a": "-5", "b": "-3", "expected": "15"},
@@ -117,7 +120,7 @@ class TestMultiplication(BaseOperationTest):
 class TestDivision(BaseOperationTest):
     """Test Division operation."""
 
-    operation_class = Division
+    operation_class = div
     valid_test_cases = {
         "positive_numbers": {"a": "6", "b": "2", "expected": "3"},
         "negative_numbers": {"a": "-6", "b": "-2", "expected": "3"},
@@ -138,7 +141,7 @@ class TestDivision(BaseOperationTest):
 class TestPower(BaseOperationTest):
     """Test Power operation."""
 
-    operation_class = Power
+    operation_class = exp
     valid_test_cases = {
         "positive_base_and_exponent": {"a": "2", "b": "3", "expected": "8"},
         "zero_exponent": {"a": "5", "b": "0", "expected": "1"},
@@ -159,7 +162,7 @@ class TestPower(BaseOperationTest):
 class TestRoot(BaseOperationTest):
     """Test Root operation."""
 
-    operation_class = Root
+    operation_class = root
     valid_test_cases = {
         "square_root": {"a": "9", "b": "2", "expected": "3"},
         "cube_root": {"a": "27", "b": "3", "expected": "3"},
@@ -188,12 +191,12 @@ class TestOperationFactory:
     def test_create_valid_operations(self):
         """Test creation of all valid operations."""
         operation_map = {
-            'add': Addition,
-            'subtract': Subtraction,
-            'multiply': Multiplication,
-            'divide': Division,
-            'power': Power,
-            'root': Root,
+            'add': add,
+            'subtract': sub,
+            'multiply': mult,
+            'divide': div,
+            'power': exp,
+            'root': root,
         }
 
         for op_name, op_class in operation_map.items():
