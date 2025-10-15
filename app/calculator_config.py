@@ -17,7 +17,7 @@ def get_project_root() -> Path:
     return current_file.parent.parent
 
 @dataclass
-class calculatorConfig:
+class CalculatorConfig:
     def __init__(
         self,
         base_dir: Optional[Path] = None,

@@ -28,13 +28,13 @@ class Calculation:
         self.result = self.calculate()
     def calculate(self) -> Decimal:
         operations = {
-            "addition": lambda x, y: x + y,
-            "subtract": lambda x, y: x - y,
-            "multiply": lambda x, y: x * y,
-            "divide": lambda x, y: x / y 
+            "add": lambda x, y: x + y,
+            "sub": lambda x, y: x - y,
+            "mult": lambda x, y: x * y,
+            "div": lambda x, y: x / y 
             if y != 0 
             else self._raise_div_zero(),
-            "power": lambda x, y: Decimal(pow(float(x), float(y))) 
+            "exp": lambda x, y: Decimal(pow(float(x), float(y))) 
             if y >= 0 
             else self._raise_neg_power(),
             "root": lambda x, y: (
@@ -42,16 +42,16 @@ class Calculation:
                 if x >= 0 and y != 0 
                 else self._raise_invalid_root(x, y)
             ),
-            "modulus": lambda x, y: (Decimal(x % y)
+            "mod": lambda x, y: (Decimal(x % y)
             if y != 0
             else self._raise_div_zero()),
-            "integer division": lambda x,y: Decimal(int(x) // int(y))
+            "idiv": lambda x,y: Decimal(int(x) // int(y))
             if isinstance(x, int) and isinstance(y,int) and y != 0
             else self._raise_div_zero(),
-            "percentage" : lambda x, y: Decimal(x / y * 100)
+            "perc" : lambda x, y: Decimal(x / y * 100)
             if y != 0
             else self.raise_div_zero(),
-            "absolute value" : lambda x, y: Decimal(abs(x) - abs(y)),
+            "abs" : lambda x, y: Decimal(abs(x) - abs(y)),
         }
         op = operations.get(self.operation)
         if not op:
@@ -62,7 +62,7 @@ class Calculation:
             return op(self.operand1, self.operand2)
         except (InvalidOperation, ValueError, ArithmeticError) as e:
             # Handle any errors that occur during calculation
-            raise OperationError(f"Calculation failed: {str(e)}")
+            raise OperationError(f"1Calculation failed: {str(e)}")
     @staticmethod
     def _raise_div_zero():  # pragma: no cover
         """
@@ -156,7 +156,7 @@ class Calculation:
             return calc
 
         except (KeyError, InvalidOperation, ValueError) as e:
-            raise OperationError(f"Invalid calculation data: {str(e)}")
+            raise OperationError(f"2Invalid calculation data: {str(e)}")
 
     def __str__(self) -> str:
         """
@@ -229,4 +229,4 @@ class Calculation:
                 Decimal('0.' + '0' * precision)
             ).normalize())
         except InvalidOperation:  # pragma: no cover
-            return str(self.result)
+            return str("3"+self.result)

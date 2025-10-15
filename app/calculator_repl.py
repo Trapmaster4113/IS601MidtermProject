@@ -36,7 +36,7 @@ def calculator_repl():
                 if command == 'help':
                     # Display available commands
                     print("\nAvailable commands:")
-                    print("  add, subtract, multiply, divide, power, root - Perform calculations")
+                    print("  add, subtract (sub), multiply (mult), divide (div), power (exp), root, modulus (mod), integer division (idiv), percentage(perc), absolute difference (abs) - Perform calculations")
                     print("  history - Show calculation history")
                     print("  clear - Clear calculation history")
                     print("  undo - Undo the last calculation")
@@ -52,7 +52,7 @@ def calculator_repl():
                         calc.save_history()
                         print("History saved successfully.")
                     except Exception as e:
-                        print(f"Warning: Could not save history: {e}")
+                        print(f"10Warning: Could not save history: {e}")
                     print("Goodbye!")
                     break
 
@@ -95,7 +95,7 @@ def calculator_repl():
                         calc.save_history()
                         print("History saved successfully")
                     except Exception as e:
-                        print(f"Error saving history: {e}")
+                        print(f"11Error saving history: {e}")
                     continue
 
                 if command == 'load':
@@ -104,10 +104,10 @@ def calculator_repl():
                         calc.load_history()
                         print("History loaded successfully")
                     except Exception as e:
-                        print(f"Error loading history: {e}")
+                        print(f"12Error loading history: {e}")
                     continue
 
-                if command in ['add', 'subtract', 'multiply', 'divide', 'power', 'root']:
+                if command in ['add', 'sub', 'mult', 'div', 'exp', 'root', 'idiv', 'exp','mod', 'percent','abs']:
                     # Perform the specified arithmetic operation
                     try:
                         print("\nEnter numbers (or 'cancel' to abort):")
@@ -134,30 +134,30 @@ def calculator_repl():
                         print(f"\nResult: {result}")
                     except (ValidationError, OperationError) as e:
                         # Handle known exceptions related to validation or operation errors
-                        print(f"Error: {e}")
+                        print(f"13Error: {e}")
                     except Exception as e:
                         # Handle any unexpected exceptions
-                        print(f"Unexpected error: {e}")
+                        print(f"14Unexpected error: {e}")
                     continue
 
                 # Handle unknown commands
-                print(f"Unknown command: '{command}'. Type 'help' for available commands.")
+                print(f"15Unknown command: '{command}'. Type 'help' for available commands.")
 
             except KeyboardInterrupt:
                 # Handle Ctrl+C interruption gracefully
-                print("\nOperation cancelled")
+                print("\n16Operation cancelled")
                 continue
             except EOFError:
                 # Handle end-of-file (e.g., Ctrl+D) gracefully
-                print("\nInput terminated. Exiting...")
+                print("\n17Input terminated. Exiting...")
                 break
             except Exception as e:
                 # Handle any other unexpected exceptions
-                print(f"Error: {e}")
+                print(f"18Error: {e}")
                 continue
 
     except Exception as e:
         # Handle fatal errors during initialization
         print(f"Fatal error: {e}")
-        logging.error(f"Fatal error in calculator REPL: {e}")
+        logging.error(f"19Fatal error in calculator REPL: {e}")
         raise

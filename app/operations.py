@@ -74,7 +74,7 @@ class perc(Operation):
 class abs(Operation):
     def execute(self, a, b) -> Decimal:
         return abs(a) - abs(b)
-class operationFactory:
+class OperationFactory:
     """
     Factory class for creating operation instances.
 
@@ -83,16 +83,16 @@ class operationFactory:
     scalability and decouples the creation logic from the Calculator class.
     """
     _Operation: Dict[str, type] = {
-        'addition': add,
-        'subtract': sub,
-        'multiply': mult,
-        'divide': div,
-        'power': exp,
+        'add': add,
+        'sub': sub,
+        'mult': mult,
+        'div': div,
+        'exp': exp,
         'root': root,
-        'modulus' : mod,
-        'integer division': idiv,
-        'percentage' : perc,
-        'absolute value' : abs,
+        'mod' : mod,
+        'idiv': idiv,
+        'perc' : perc,
+        'abs' : abs,
     }
     @classmethod
     def register_operation(cls, name: str, operation_class: type) -> None:

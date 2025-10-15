@@ -32,37 +32,45 @@ class Calculator:
         self.config.validate()
 
         os.makedirs(self.config.log_dir, exist_ok=True)
-        self.setup_logging()
+        self._setup_logging()
 
         self.history: List[Calculation] = []
         self.operation_stratetgy: Optional[Operation] = None
-        self.observer: List[HistoryObserver] = []
+        self.observers: List[HistoryObserver] = []
 
-        self.undo_stack: List[CalculatorMemento]
-        self.redo_stack: List[CalculatorMemento]
+        self.undo_stack: List[CalculatorMemento] = []
+        self.redo_stack: List[CalculatorMemento] = []
 
         self._setup_directories()
 
         try:
             self.load_history()
         except Exception as e:
-            logging.warning(f"Could not load existing history: {e}")
-        logging.infor("Calculator initialized with configuration")
+            logging.warning(f"4Could not load existing history: {e}")
+        logging.info("4Calculator initialized with configuration")
 
     def _setup_logging(self) -> None:
-        try:
-            os.makedirs(self.config.log_dir, exist_ok=True)
-            log_file = self.config.log_file.resolves()
+        """
+        Configure the logging system.
 
+        Sets up logging to a file with a specified format and log level.
+        """
+        try:
+            # Ensure the log directory exists
+            os.makedirs(self.config.log_dir, exist_ok=True)
+            log_file = self.config.log_file.resolve()
+
+            # Configure the basic logging settings
             logging.basicConfig(
                 filename=str(log_file),
                 level=logging.INFO,
-                format="%(asctime)s - %(levelname)s - $(message)s",
-                force = True #overwrite the file
+                format='%(asctime)s - %(levelname)s - %(message)s',
+                force=True  # Overwrite any existing logging configuration
             )
-            logging.info(f"Logging Initalized at: {log_file}")
+            logging.info(f"Logging initialized at: {log_file}")
         except Exception as e:
-            print(f"Error setting up logging: {e}")
+            # Print an error message and re-raise the exception if logging setup fails
+            print(f"5Error setting up logging: {e}")
             raise
     def _setup_directories(self) -> None:
         self.config.history_dir.mkdir(parents=True, exist_ok=True)
@@ -75,7 +83,20 @@ class Calculator:
     def notify_observers(self, calculation: Calculation) -> None:
         for observer in self.observers:
             observer.update(calculation)
-    def set_operation(
+    def set_operation(self, operation: Operation) -> None:
+        """
+        Set the current operation strategy.
+
+        Assigns the operation strategy that will be used for performing calculations.
+        This is part of the Strategy pattern, allowing the calculator to switch between
+        different operation algorithms dynamically.
+
+        Args:
+            operation (Operation): The operation strategy to be set.
+        """
+        self.operation_strategy = operation
+        logging.info(f"Set operation: {operation}")
+    def perform_operation(
             self,
             a: Union[str, Number],
             b: Union[str, Number],
@@ -83,17 +104,15 @@ class Calculator:
         if not self.operation_strategy:
             raise OperationError("No Operation Set")
         try: 
-            validated_a = InputValidator(a, self.config)
-            validated_b = InputValidator(b, self.config)
-
+            validated_a = InputValidator.validate_number(a, self.config)
+            validated_b = InputValidator.validate_number(b, self.config)
             result = self.operation_strategy.execute(validated_a, validated_b)
-
+            #print(result)
             calculation = Calculation(
-                operation = str(self.operation_stratetgy),
+                operation = str(self.operation_strategy),
                 operand1 = validated_a,
                 operand2 = validated_b,
             )
-
             self.undo_stack.append(CalculatorMemento(self.history.copy()))
 
             self.redo_stack.clear()
@@ -101,11 +120,11 @@ class Calculator:
             self.history.append(calculation)
             return result
         except ValidationError as e:
-            logging.error(f"operation failed: {str(e)}")
+            logging.error(f"6Operation failed: {str(e)}")
             raise
         except Exception as e:
-            logging.error(f"Operation failed: {str(e)}")
-            raise OperationError(f"Operation failed: {str(e)}")
+            logging.error(f"7Operation failed: {str(e)}")
+            raise OperationError(f"7Operation failed: {str(e)}")
     def save_history(self) -> None:
         try:
             self.config.history_dir.mkdir(parents=True, exist_ok=True)
@@ -128,8 +147,8 @@ class Calculator:
                              ).to_csv(self.config.history_file, index=False)
                 logging.info("Empty history saved")
         except Exception as e:
-            logging.error(f"Failed to save history: {e}")
-            raise OperationError(f"Failed to save history: {e}")
+            logging.error(f"8Failed to save history: {e}")
+            raise OperationError(f"8Failed to save history: {e}")
     def load_history(self) -> None:
         """
         Load calculation history from a CSV file using pandas.
