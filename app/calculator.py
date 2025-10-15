@@ -46,8 +46,8 @@ class Calculator:
         try:
             self.load_history()
         except Exception as e:
-            logging.warning(f"4Could not load existing history: {e}")
-        logging.info("4Calculator initialized with configuration")
+            logging.warning(f"Could not load existing history: {e}")
+        logging.info("Calculator initialized with configuration")
 
     def _setup_logging(self) -> None:
         """
@@ -70,7 +70,7 @@ class Calculator:
             logging.info(f"Logging initialized at: {log_file}")
         except Exception as e:
             # Print an error message and re-raise the exception if logging setup fails
-            print(f"5Error setting up logging: {e}")
+            print(f"Error setting up logging: {e}")
             raise
     def _setup_directories(self) -> None:
         self.config.history_dir.mkdir(parents=True, exist_ok=True)
@@ -120,11 +120,11 @@ class Calculator:
             self.history.append(calculation)
             return result
         except ValidationError as e:
-            logging.error(f"6Operation failed: {str(e)}")
+            logging.error(f"Operation failed: {str(e)}")
             raise
         except Exception as e:
-            logging.error(f"7Operation failed: {str(e)}")
-            raise OperationError(f"7Operation failed: {str(e)}")
+            logging.error(f"Operation failed: {str(e)}")
+            raise OperationError(f"Operation failed: {str(e)}")
     def save_history(self) -> None:
         try:
             self.config.history_dir.mkdir(parents=True, exist_ok=True)
@@ -147,8 +147,8 @@ class Calculator:
                              ).to_csv(self.config.history_file, index=False)
                 logging.info("Empty history saved")
         except Exception as e:
-            logging.error(f"8Failed to save history: {e}")
-            raise OperationError(f"8Failed to save history: {e}")
+            logging.error(f"Failed to save history: {e}")
+            raise OperationError(f"Failed to save history: {e}")
     def load_history(self) -> None:
         """
         Load calculation history from a CSV file using pandas.

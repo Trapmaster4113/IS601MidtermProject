@@ -52,7 +52,7 @@ def calculator_repl():
                         calc.save_history()
                         print("History saved successfully.")
                     except Exception as e:
-                        print(f"10Warning: Could not save history: {e}")
+                        print(f"Warning: Could not save history: {e}")
                     print("Goodbye!")
                     break
 
@@ -95,7 +95,7 @@ def calculator_repl():
                         calc.save_history()
                         print("History saved successfully")
                     except Exception as e:
-                        print(f"11Error saving history: {e}")
+                        print(f"Error saving history: {e}")
                     continue
 
                 if command == 'load':
@@ -104,7 +104,7 @@ def calculator_repl():
                         calc.load_history()
                         print("History loaded successfully")
                     except Exception as e:
-                        print(f"12Error loading history: {e}")
+                        print(f"Error loading history: {e}")
                     continue
 
                 if command in ['add', 'sub', 'mult', 'div', 'exp', 'root', 'idiv', 'exp','mod', 'percent','abs']:
@@ -134,30 +134,30 @@ def calculator_repl():
                         print(f"\nResult: {result}")
                     except (ValidationError, OperationError) as e:
                         # Handle known exceptions related to validation or operation errors
-                        print(f"13Error: {e}")
+                        print(f"Error: {e}")
                     except Exception as e:
                         # Handle any unexpected exceptions
-                        print(f"14Unexpected error: {e}")
+                        print(f"Unexpected error: {e}")
                     continue
 
                 # Handle unknown commands
-                print(f"15Unknown command: '{command}'. Type 'help' for available commands.")
+                print(f"Unknown command: '{command}'. Type 'help' for available commands.")
 
             except KeyboardInterrupt:
                 # Handle Ctrl+C interruption gracefully
-                print("\n16Operation cancelled")
+                print("\nOperation cancelled")
                 continue
             except EOFError:
                 # Handle end-of-file (e.g., Ctrl+D) gracefully
-                print("\n17Input terminated. Exiting...")
+                print("\nInput terminated. Exiting...")
                 break
             except Exception as e:
                 # Handle any other unexpected exceptions
-                print(f"18Error: {e}")
+                print(f"Error: {e}")
                 continue
 
     except Exception as e:
         # Handle fatal errors during initialization
         print(f"Fatal error: {e}")
-        logging.error(f"19Fatal error in calculator REPL: {e}")
+        logging.error(f"Fatal error in calculator REPL: {e}")
         raise

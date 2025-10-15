@@ -35,4 +35,4 @@ class InputValidator:
                 raise ValidationError(f"Value exceeds maximum allowed: {config.max_input_value}")
             return number.normalize()
         except InvalidOperation as e:
-            raise ValidationError(f"9Invalid number format: {value}") from e
+            raise ValidationError(f"Invalid number format: {value}") from e
