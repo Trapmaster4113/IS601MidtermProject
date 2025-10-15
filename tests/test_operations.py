@@ -11,9 +11,10 @@ from app.operations import (
     div,
     exp,
     root,
+    mod,
     idiv,
     perc,
-    abs,
+    absv,
     OperationFactory,
 )
 
@@ -191,13 +192,17 @@ class TestOperationFactory:
     def test_create_valid_operations(self):
         """Test creation of all valid operations."""
         operation_map = {
-            'add': add,
-            'subtract': sub,
-            'multiply': mult,
-            'divide': div,
-            'power': exp,
-            'root': root,
-        }
+        'add': add,
+        'sub': sub,
+        'mult': mult,
+        'div': div,
+        'exp': exp,
+        'root': root,
+        'mod' : mod,
+        'idiv': idiv,
+        'perc' : perc,
+        'absv' : absv,
+    }
 
         for op_name, op_class in operation_map.items():
             operation = OperationFactory.create_operation(op_name)

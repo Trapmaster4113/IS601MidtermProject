@@ -42,7 +42,6 @@ class Calculator:
         self.redo_stack: List[CalculatorMemento] = []
 
         self._setup_directories()
-
         try:
             self.load_history()
         except Exception as e:
@@ -102,12 +101,11 @@ class Calculator:
             b: Union[str, Number],
     ) -> CalculationResult:
         if not self.operation_strategy:
-            raise OperationError("No Operation Set")
+            raise OperationError("No operation set")
         try: 
             validated_a = InputValidator.validate_number(a, self.config)
             validated_b = InputValidator.validate_number(b, self.config)
             result = self.operation_strategy.execute(validated_a, validated_b)
-            #print(result)
             calculation = Calculation(
                 operation = str(self.operation_strategy),
                 operand1 = validated_a,

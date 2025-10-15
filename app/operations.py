@@ -31,13 +31,16 @@ class div(Operation):
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
         self.validate_operands(a,b)
         return a / b
+    
 class exp(Operation):
     def validate_operands(self, a, b) -> None:
         super().validate_operands(a, b)
         if b < 0:
-            raise ValidationError("Negative exponents are not supported")
+            raise ValidationError("Negative exponents not supported")
     def execute(self, a, b) -> Decimal:
+        self.validate_operands(a,b)
         return Decimal(pow(float(a),float(b)))
+    
 class root(Operation):
     def validate_operands(self, a, b) -> None:
         super().validate_operands(a, b)
@@ -48,6 +51,7 @@ class root(Operation):
     def execute(self, a, b) -> Decimal:
         self.validate_operands(a, b)
         return Decimal(pow(float(a), 1 / float(b)))
+    
 class mod(Operation):
     def validate_operands(self, a, b) -> None:
         super().validate_operands(a, b)
@@ -56,6 +60,7 @@ class mod(Operation):
     def execute(self, a, b) -> Decimal:
         self.validate_operands(a, b)
         return a % b
+    
 class idiv(Operation):
     def validate_operands(self, a, b) -> None:
         super().validate_operands(a, b)
@@ -64,6 +69,7 @@ class idiv(Operation):
     def execute(self, a, b) -> int:
         self.validate_operands(a, b)
         return int(a)//int(b)
+    
 class perc(Operation):
     def validate_operands(self, a, b) -> None:
         super().validate_operands(a, b)
@@ -72,6 +78,7 @@ class perc(Operation):
     def execute(self, a, b) -> Decimal:
         self.validate_operands(a, b)
         return (a / b) * 100
+    
 class absv(Operation):
     def execute(self, a, b) -> Decimal:
         return abs(a-b)

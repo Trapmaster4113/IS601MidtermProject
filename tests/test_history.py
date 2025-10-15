@@ -7,7 +7,7 @@ from app.calculator_config import CalculatorConfig
 
 # Sample setup for mock calculation
 calculation_mock = Mock(spec=Calculation)
-calculation_mock.operation = "addition"
+calculation_mock.operation = "add"
 calculation_mock.operand1 = 5
 calculation_mock.operand2 = 3
 calculation_mock.result = 8
@@ -19,7 +19,7 @@ def test_logging_observer_logs_calculation(logging_info_mock):
     observer = LoggingObserver()
     observer.update(calculation_mock)
     logging_info_mock.assert_called_once_with(
-        "Calculation performed: addition (5, 3) = 8"
+        "Calculation performed: add (5, 3) = 8"
     )
 
 def test_logging_observer_no_calculation():

@@ -36,11 +36,11 @@ def calculator():
 
 # Test Calculator Initialization
 
-def test_calculator_initialization(Calculator):
-    assert Calculator.history == []
-    assert Calculator.undo_stack == []
-    assert Calculator.redo_stack == []
-    assert Calculator.operation_strategy is None
+def test_calculator_initialization(calculator):
+    assert calculator.history == []
+    assert calculator.undo_stack == []
+    assert calculator.redo_stack == []
+    assert calculator.operation_strategy is None
 
 # Test Logging Setup
 
@@ -124,7 +124,7 @@ def test_save_history(mock_to_csv, calculator):
 def test_load_history(mock_exists, mock_read_csv, calculator):
     # Mock CSV data to match the expected format in from_dict
     mock_read_csv.return_value = pd.DataFrame({
-        'operation': ['Addition'],
+        'operation': ['add'],
         'operand1': ['2'],
         'operand2': ['3'],
         'result': ['5'],
@@ -137,7 +137,7 @@ def test_load_history(mock_exists, mock_read_csv, calculator):
         # Verify history length after loading
         assert len(calculator.history) == 1
         # Verify the loaded values
-        assert calculator.history[0].operation == "Addition"
+        assert calculator.history[0].operation == "add"
         assert calculator.history[0].operand1 == Decimal("2")
         assert calculator.history[0].operand2 == Decimal("3")
         assert calculator.history[0].result == Decimal("5")
@@ -162,7 +162,7 @@ def test_clear_history(calculator):
 @patch('builtins.print')
 def test_calculator_repl_exit(mock_print, mock_input):
     with patch('app.calculator.Calculator.save_history') as mock_save_history:
-        calculator_repl()
+        Calculator_repl()
         mock_save_history.assert_called_once()
         mock_print.assert_any_call("History saved successfully.")
         mock_print.assert_any_call("Goodbye!")
@@ -170,11 +170,11 @@ def test_calculator_repl_exit(mock_print, mock_input):
 @patch('builtins.input', side_effect=['help', 'exit'])
 @patch('builtins.print')
 def test_calculator_repl_help(mock_print, mock_input):
-    calculator_repl()
+    Calculator_repl()
     mock_print.assert_any_call("\nAvailable commands:")
 
 @patch('builtins.input', side_effect=['add', '2', '3', 'exit'])
 @patch('builtins.print')
 def test_calculator_repl_addition(mock_print, mock_input):
-    calculator_repl()
+    Calculator_repl()
     mock_print.assert_any_call("\nResult: 5")
