@@ -48,14 +48,51 @@ class root(Operation):
     def execute(self, a, b) -> Decimal:
         self.validate_operands(a, b)
         return Decimal(pow(float(a), 1 / float(b)))
+class mod(Operation):
+    def validateOperands(self, a, b) -> None:
+        super().validateOperands(a, b)
+        if b == 0:
+            raise ValidationError("Division by zero is not allowed")
+    def execute(self, a, b) -> Decimal:
+        return a % b
+class idiv(Operation):
+    def validateOperands(self, a, b) -> None:
+        super().validateOperands(a, b)
+        if b == 0:
+            raise ValidationError("Division by zero is not allowed")
+        if not isinstance(a, int) or not isinstance(b, int):
+            raise ValidationError("Invalid Inputs: Must be Integers")
+    def execute(self, a, b) -> int:
+        return int(a)//int(b)
+class perc(Operation):
+    def validateOperands(self, a, b) -> None:
+        super().validateOperands(a, b)
+        if b == 0:
+            raise ValidationError("Division by zero is not allowed")
+    def execute(self, a, b) -> Decimal:
+        return a / b * 100
+class abs(Operation):
+    def execute(self, a, b) -> Decimal:
+        return abs(a) - abs(b)
 class operationFactory:
+    """
+    Factory class for creating operation instances.
+
+    Implements the Factory pattern by providing a method to instantiate
+    different operation classes based on a given operation type. This promotes
+    scalability and decouples the creation logic from the Calculator class.
+    """
     _Operation: Dict[str, type] = {
-        'add': add,
+        'addition': add,
         'subtract': sub,
         'multiply': mult,
         'divide': div,
         'power': exp,
-        'root': root
+        'root': root,
+        'modulus' : mod,
+        'integer division': idiv,
+        'percentage' : perc,
+        'absolute value' : abs,
     }
     @classmethod
     def register_operation(cls, name: str, operation_class: type) -> None:
