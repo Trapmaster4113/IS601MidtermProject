@@ -1,5 +1,6 @@
-Project Description: <br>
-Calculator application with a history remembering. The Calculator's math functions include: <br>
+Project Description:
+Calculator application with a history remembering. <br>
+The Calculator's math functions include: <br>
  - addition
  - subtraction
  - multiplication
