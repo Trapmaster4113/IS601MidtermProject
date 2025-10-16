@@ -13,11 +13,32 @@ from app.exceptions import ConfigurationError
 load_dotenv()
 
 def get_project_root() -> Path:
+    """
+    Get the project root directory.
+
+    This function determines the root directory of the project by navigating up
+    the directory hierarchy from the current file's location.
+
+    Returns:
+        Path: The root directory path of the project.
+    """
+    # Get the directory of the current file (app/calculator_config.py)
     current_file = Path(__file__)
+    # Navigate up two levels to reach the project root (from app/calculator_config.py to project root)
     return current_file.parent.parent
 
 @dataclass
 class CalculatorConfig:
+    """
+    Calculator configuration settings.
+
+    This class manages all configuration parameters required by the calculator
+    application, including directory paths, history size, auto-save preferences,
+    calculation precision, maximum input values, and default encoding.
+
+    Configuration can be set via environment variables or by passing parameters
+    directly to the class constructor.
+    """
     def __init__(
         self,
         base_dir: Optional[Path] = None,
@@ -27,6 +48,17 @@ class CalculatorConfig:
         max_input_value: Optional[Number] = None,
         default_encoding: Optional[str] = None
     ):
+        """
+        Initialize configuration with environment variables and defaults.
+
+        Args:
+            base_dir (Optional[Path], optional): Base directory for the calculator. Defaults to None.
+            max_history_size (Optional[int], optional): Maximum number of history entries. Defaults to None.
+            auto_save (Optional[bool], optional): Whether to auto-save history. Defaults to None.
+            precision (Optional[int], optional): Number of decimal places for calculations. Defaults to None.
+            max_input_value (Optional[Number], optional): Maximum allowed input value. Defaults to None.
+            default_encoding (Optional[str], optional): Default encoding for file operations. Defaults to None.
+        """
         # Set base directory to project root by default
         project_root = get_project_root()
         self.base_dir = base_dir or Path(

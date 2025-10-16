@@ -10,6 +10,8 @@ class Logger:
 
         Sets up logging to a file with a specified format and log level.
         """
+        # Create required directories for history management
+        Logger._setup_directories
         os.makedirs(config.log_dir, exist_ok=True)
         try:
             # Ensure the log directory exists
@@ -29,11 +31,22 @@ class Logger:
             Color.printError(f"Error setting up logging: {e}")
             raise
     @staticmethod
+    def _setup_directories(config: CalculatorConfig) -> None:
+        """
+        Create required directories.
+
+        Ensures that all necessary directories for history management exist.
+        """
+        config.history_dir.mkdir(parents=True, exist_ok=True)
+    #Logs any message as an info log
+    @staticmethod
     def infoLog(text: str) -> None:
         logging.info(text)
+    #Logs any message as warning log
     @staticmethod
     def warnLog(text: str) -> None:
         logging.warning(text)
+    #Logs any message as an error log
     @staticmethod
     def errorLog(text: str) -> None:
         logging.error(text)

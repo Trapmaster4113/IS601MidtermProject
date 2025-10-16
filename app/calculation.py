@@ -25,6 +25,7 @@ class Calculation:
         instance is created.
         """
         self.result = self.calculate()
+    # Mapping of operation names to their corresponding functions
     def calculate(self) -> Decimal:
         operations = {
             "add": lambda x, y: x + y,
@@ -52,6 +53,7 @@ class Calculation:
             else self._raise_div_zero(),
             "absv" : lambda x, y: Decimal(abs(x-y)),
         }
+        # Retrieve the operation function based on the operation name
         op = operations.get(self.operation)
         if not op:
             raise OperationError(f"Unknown operation: {self.operation}")

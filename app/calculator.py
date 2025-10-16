@@ -22,37 +22,81 @@ Number = Union[int,float,Decimal]
 CalculationResult = Union[Number, str]
 
 class Calculator:
+    """
+    Main calculator class implementing multiple design patterns.
+
+    This class serves as the core of the calculator application, managing operations,
+    calculation history, observers, configuration settings, and data persistence.
+    It integrates various design patterns to enhance flexibility, maintainability, and
+    scalability.
+    """
     def __init__(self,config: Optional[CalculatorConfig] = None):
+        """
+        Initialize calculator with configuration.
+
+        Args:
+            config (Optional[CalculatorConfig], optional): Configuration settings for the calculator.
+                If not provided, default settings are loaded based on environment variables.
+        """
         if config is None:
+            # Determine the project root directory if no configuration is provided
             current_file = Path(__file__)
             project_root = current_file.parent.parent
             config = CalculatorConfig(base_dir=project_root)
+        # Assign the configuration and validate its parameters
         Logger._setup_logging(config)
         self.config = config
         self.config.validate()
+        # Initialize calculation history and operation strategy
         self.history: List[Calculation] = []
         self.operation_strategy: Optional[Operation] = None
+         # Initialize observer list for the Observer pattern
         self.observers: List[HistoryObserver] = []
-
+    # Initialize stacks for undo and redo functionality using the Memento pattern
         self.undo_stack: List[CalculatorMemento] = []
         self.redo_stack: List[CalculatorMemento] = []
-
-        self._setup_directories()
         try:
+            # Attempt to load existing calculation history from file
             self.load_history()
         except Exception as e:
+            # Log a warning if history could not be loaded
             Logger.warnLog(f"Could not load existing history: {e}")
+        # Log the successful initialization of the calculator
         Logger.infoLog("Calculator initialized with configuration")
-    def _setup_directories(self) -> None:
-        self.config.history_dir.mkdir(parents=True, exist_ok=True)
     def add_observer(self, observer: HistoryObserver) -> None:
+        """
+        Register a new observer.
+
+        Adds an observer to the list, allowing it to receive updates when new
+        calculations are performed.
+
+        Args:
+            observer (HistoryObserver): The observer to be added.
+        """
         self.observers.append(observer)
         Logger.infoLog(f"Added observer: {observer.__class__.__name__}")
     
     def remove_observer(self, observer: HistoryObserver) -> None:
+        """
+        Remove an existing observer.
+
+        Removes an observer from the list, preventing it from receiving further updates.
+
+        Args:
+            observer (HistoryObserver): The observer to be removed.
+        """
         self.observers.remove(observer)
         Logger.infoLog(f"Removed observer: {observer.__class__.__name__}")
     def notify_observers(self, calculation: Calculation) -> None:
+        """
+        Notify all observers of a new calculation.
+
+        Iterates through the list of observers and calls their update method,
+        passing the new calculation as an argument.
+
+        Args:
+            calculation (Calculation): The latest calculation performed.
+        """
         for observer in self.observers:
             observer.update(calculation)
     def set_operation(self, operation: Operation) -> None:
@@ -73,35 +117,75 @@ class Calculator:
             a: Union[str, Number],
             b: Union[str, Number],
     ) -> CalculationResult:
+        """
+        Perform calculation with the current operation.
+
+        Validates and sanitizes user inputs, executes the calculation using the
+        current operation strategy, updates the history, and notifies observers.
+
+        Args:
+            a (Union[str, Number]): The first operand, can be a string or a numeric type.
+            b (Union[str, Number]): The second operand, can be a string or a numeric type.
+
+        Returns:
+            CalculationResult: The result of the calculation.
+
+        Raises:
+            OperationError: If no operation is set or if the operation fails.
+            ValidationError: If input validation fails.
+        """
         if not self.operation_strategy:
             raise OperationError("No operation set")
         try: 
+            # Validate and convert inputs to Decimal
             validated_a = InputValidator.validate_number(a, self.config)
             validated_b = InputValidator.validate_number(b, self.config)
+            # Execute the operation strategy
             result = self.operation_strategy.execute(validated_a, validated_b)
+            # Create a new Calculation instance with the operation details
             calculation = Calculation(
                 operation = str(self.operation_strategy),
                 operand1 = validated_a,
                 operand2 = validated_b,
             )
+            # Save the current state to the undo stack before making changes
             self.undo_stack.append(CalculatorMemento(self.history.copy()))
-
+            # Clear the redo stack since new operation invalidates the redo history
             self.redo_stack.clear()
-
+            # Append the new calculation to the history
             self.history.append(calculation)
+            # Ensure the history does not exceed the maximum size
+            if len(self.history) > self.config.max_history_size:
+                self.history.pop(0)
+
+            # Notify all observers about the new calculation
+            self.notify_observers(calculation)
             return result
         except ValidationError as e:
+            # Log and re-raise validation errors
             Logger.errorLog(f"Operation failed: {str(e)}")
             raise
         except Exception as e:
+            # Log and raise operation errors for any other exceptions
             Logger.errorLog(f"Operation failed: {str(e)}")
             raise OperationError(f"Operation failed: {str(e)}")
     def save_history(self) -> None:
+        """
+        Save calculation history to a CSV file using pandas.
+
+        Serializes the history of calculations and writes them to a CSV file for
+        persistent storage. Utilizes pandas DataFrames for efficient data handling.
+
+        Raises:
+            OperationError: If saving the history fails.
+        """
         try:
+            # Ensure the history directory exists
             self.config.history_dir.mkdir(parents=True, exist_ok=True)
 
             history_data = []
             for calc in self.history:
+                # Serialize each Calculation instance to a dictionary
                 history_data.append({
                     'operation': str(calc.operation),
                     'operand1': str(calc.operand1),
@@ -110,14 +194,18 @@ class Calculator:
                     'timestamp': calc.timestamp.isoformat()
                 })
             if history_data: 
+                # Create a pandas DataFrame from the history data
                 df = pd.DataFrame(history_data)
+                # Write the DataFrame to a CSV file without the index
                 df.to_csv(self.config.history_file, index=False)
                 Logger.infoLog(f"History saved successfully to {self.config.history_file}")
             else: #pragma: no cover
+                # If history is empty, create an empty CSV with headers
                 pd.DataFrame(columns =['operation','operand1','operand2','result','timestamp']
                              ).to_csv(self.config.history_file, index=False)
                 Logger.infoLog("Empty history saved")
         except Exception as e: #pragma: no cover
+            # Log and raise an OperationError if saving fails
             Logger.errorLog(f"Failed to save history: {e}")
             raise OperationError(f"Failed to save history: {e}")
     def load_history(self) -> None:

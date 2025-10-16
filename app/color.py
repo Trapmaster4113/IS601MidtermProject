@@ -1,11 +1,14 @@
 from colorama import Fore, Back, Style, init
 from termcolor import colored
 
+#Color Class so all other programs that print to the terminal can use static methods to print in color
 class Color:
     init()
+    #Resets all styles and colors
     @staticmethod
     def reset():
         print(Style.RESET_ALL)
+    #Prints to the terminal in a certain color and style. If no style is inputted, default is "bright"
     def printColorOutput(message: str, color: str, style: str = "bright") -> None:
         if not style:
             print(colored(message, color.lower()))
@@ -18,6 +21,7 @@ class Color:
                 case "normal":
                     print(Style.NORMAL + colored(message,color.lower()))
         Color.reset()
+    #Prints to the terminal in a certain color and style. If no style is inputted, default is "bright". Expects a return input from the user after printing
     def printColorInput(message: str, color: str, style = "bright") -> str:
         if not style:
             inputted = input(colored(message,color))
@@ -31,6 +35,7 @@ class Color:
                     inputted = input(Style.NORMAL + colored(message,color.lower()))
         Color.reset()
         return inputted.lower().strip()
+    #Prints a message in a specific style (bright) and color (Red) indicating an error has occurred
     def printError(message:str) -> None:
         print(Style.BRIGHT + Fore.RED + message)
         Color.reset()
