@@ -9,6 +9,8 @@ from app.exceptions import OperationError, ValidationError
 from app.history import AutoSaveObserver, LoggingObserver
 from app.operations import OperationFactory
 from app.color import Color
+from colorama import Fore, Back, Style, init
+from termcolor import colored
 def Calculator_repl(): 
     """
     Command-line interface for the calculator.

@@ -8,15 +8,15 @@ class Color:
         print(Style.RESET_ALL)
     def printColorOutput(message: str, color: str, style: str = "bright") -> None:
         if not style:
-            print(colored(message, color))
+            print(colored(message, color.lower()))
         else:
             match style.lower():
                 case "bright":
-                    print(Style.BRIGHT + colored(message, color))
+                    print(Style.BRIGHT + colored(message, color.lower()))
                 case "dim":
-                    print(Style.DIM + colored(message, color))
+                    print(Style.DIM + colored(message, color.lower()))
                 case "normal":
-                    print(Style.NORMAL + colored(message,color))
+                    print(Style.NORMAL + colored(message,color.lower()))
         Color.reset()
     def printColorInput(message: str, color: str, style = "bright") -> str:
         if not style:
@@ -24,11 +24,11 @@ class Color:
         else:
             match style.lower():
                 case "bright":
-                    inputted = input(Style.BRIGHT + colored(message,color))
+                    inputted = input(Style.BRIGHT + colored(message,color.lower()))
                 case "dim":
-                    inputted = input(Style.DIM + colored(message,color))
+                    inputted = input(Style.DIM + colored(message,color.lower()))
                 case "normal":
-                    inputted = input(Style.NORMAL + colored(message,color))
+                    inputted = input(Style.NORMAL + colored(message,color.lower()))
         Color.reset()
         return inputted.lower().strip()
     def printError(message:str) -> None:
