@@ -3,14 +3,17 @@ from app.calculator_config import CalculatorConfig
 from typing import Optional
 from app.operations import Operation
 import os
+from pathlib import Path
+
 class Logger:
     @staticmethod
-    def _setup_logging(config: Optional[CalculatorConfig] = None) -> None:
+    def _setup_logging(path : Path, config: Optional[CalculatorConfig] = None) -> None:
         """
         Configure the logging system.
 
         Sets up logging to a file with a specified format and log level.
         """
+        config = CalculatorConfig(base_dir=path)
         os.makedirs(config.log_dir, exist_ok=True)
         try:
             # Ensure the log directory exists
