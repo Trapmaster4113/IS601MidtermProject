@@ -200,7 +200,7 @@ class Calculation:
         Returns:
             bool: True if calculations are equal, False otherwise.
         """
-        if not isinstance(other, Calculation): #pragma: no cover
+        if not isinstance(other, Calculation): 
             return NotImplemented
         return (
             self.operation == other.operation and
