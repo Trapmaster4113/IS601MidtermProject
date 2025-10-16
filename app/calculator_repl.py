@@ -9,8 +9,7 @@ from app.exceptions import OperationError, ValidationError
 from app.history import AutoSaveObserver, LoggingObserver
 from app.operations import OperationFactory
 
-
-def Calculator_repl():
+def Calculator_repl(): 
     """
     Command-line interface for the calculator.
 
@@ -20,7 +19,6 @@ def Calculator_repl():
     try:
         # Initialize the Calculator instance
         calc = Calculator()
-
         # Register observers for logging and auto-saving history
         calc.add_observer(LoggingObserver())
         calc.add_observer(AutoSaveObserver(calc))
@@ -50,12 +48,12 @@ def Calculator_repl():
                     try:
                         calc.save_history()
                         print("History saved successfully.")
-                    except Exception as e:
+                    except Exception as e: 
                         print(f"Warning: Could not save history: {e}")
                     print("Goodbye!")
                     break
 
-                if command == 'history':
+                if command == 'history': 
                     # Display calculation history
                     history = calc.show_history()
                     if not history:
@@ -66,13 +64,13 @@ def Calculator_repl():
                             print(f"{i}. {entry}")
                     continue
 
-                if command == 'clear':
+                if command == 'clear': 
                     # Clear calculation history
                     calc.clear_history()
                     print("History cleared")
                     continue
 
-                if command == 'undo':
+                if command == 'undo': 
                     # Undo the last calculation
                     if calc.undo():
                         print("Operation undone")
@@ -80,7 +78,7 @@ def Calculator_repl():
                         print("Nothing to undo")
                     continue
 
-                if command == 'redo':
+                if command == 'redo': 
                     # Redo the last undone calculation
                     if calc.redo():
                         print("Operation redone")
@@ -88,7 +86,7 @@ def Calculator_repl():
                         print("Nothing to redo")
                     continue
 
-                if command == 'save':
+                if command == 'save': 
                     # Save calculation history to file
                     try:
                         calc.save_history()
@@ -97,7 +95,7 @@ def Calculator_repl():
                         print(f"Error saving history: {e}")
                     continue
 
-                if command == 'load':
+                if command == 'load': 
                     # Load calculation history from file
                     try:
                         calc.load_history()
@@ -106,7 +104,7 @@ def Calculator_repl():
                         print(f"Error loading history: {e}")
                     continue
 
-                if command in ['add', 'sub', 'mult', 'div', 'exp', 'root', 'idiv', 'exp','mod', 'perc','absv']:
+                if command in ['add', 'sub', 'mult', 'div', 'exp', 'root', 'idiv', 'exp','mod', 'perc','absv']: 
                     # Perform the specified arithmetic operation
                     try:
                         print("\nEnter numbers (or 'cancel' to abort):")

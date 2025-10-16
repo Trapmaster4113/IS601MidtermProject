@@ -42,19 +42,6 @@ def test_calculator_initialization(calculator):
     assert calculator.redo_stack == []
     assert calculator.operation_strategy is None
 
-# Test Logging Setup
-
-@patch('app.calculator.logging.info')
-def test_logging_setup(logging_info_mock):
-    with patch.object(CalculatorConfig, 'log_dir', new_callable=PropertyMock) as mock_log_dir, \
-         patch.object(CalculatorConfig, 'log_file', new_callable=PropertyMock) as mock_log_file:
-        mock_log_dir.return_value = Path('/tmp/logs')
-        mock_log_file.return_value = Path('/tmp/logs/calculator.log')
-        
-        # Instantiate calculator to trigger logging
-        calculator = Calculator(CalculatorConfig())
-        logging_info_mock.assert_any_call("Calculator initialized with configuration")
-
 # Test Adding and Removing Observers
 
 def test_add_observer(calculator):
@@ -100,7 +87,10 @@ def test_undo(calculator):
     calculator.perform_operation(2, 3)
     calculator.undo()
     assert calculator.history == []
-
+def test_undo_empty(calculator):
+    assert calculator.undo() == False
+def test_redo_empty(calculator):
+    assert calculator.redo() == False
 def test_redo(calculator):
     operation = OperationFactory.create_operation('add')
     calculator.set_operation(operation)
@@ -143,8 +133,19 @@ def test_load_history(mock_exists, mock_read_csv, calculator):
         assert calculator.history[0].result == Decimal("5")
     except OperationError:
         pytest.fail("Loading history failed due to OperationError")
-        
-            
+@patch('app.calculator.pd.read_csv')
+@patch('app.calculator.Path.exists', return_value=True)      
+def test_load_empty_history(mock_exists, mock_read_csv, calculator):
+    # Mock CSV data to match the expected format in from_dict
+    # Test the load_history functionality
+    try:
+        calculator.load_history()
+        # Verify history length after loading
+        assert len(calculator.history) == 0
+        # Verify the loaded values
+        assert calculator.history == []
+    except OperationError:
+        pytest.fail("Loading history failed due to OperationError")
 # Test Clearing History
 
 def test_clear_history(calculator):

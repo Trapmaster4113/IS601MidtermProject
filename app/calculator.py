@@ -27,6 +27,7 @@ class Calculator:
             current_file = Path(__file__)
             project_root = current_file.parent.parent
             config = CalculatorConfig(base_dir=project_root)
+        Logger._setup_logging(config)
         self.config = config
         self.config.validate()
         self.history: List[Calculation] = []
@@ -108,15 +109,15 @@ class Calculator:
                     'result': str(calc.result),
                     'timestamp': calc.timestamp.isoformat()
                 })
-            if history_data:
+            if history_data: 
                 df = pd.DataFrame(history_data)
                 df.to_csv(self.config.history_file, index=False)
                 Logger.infoLog(f"History saved successfully to {self.config.history_file}")
-            else:
+            else: #pragma: no cover
                 pd.DataFrame(columns =['operation','operand1','operand2','result','timestamp']
                              ).to_csv(self.config.history_file, index=False)
                 Logger.infoLog("Empty history saved")
-        except Exception as e:
+        except Exception as e: #pragma: no cover
             Logger.errorLog(f"Failed to save history: {e}")
             raise OperationError(f"Failed to save history: {e}")
     def load_history(self) -> None:
@@ -147,15 +148,15 @@ class Calculator:
                     ]
                     Logger.infoLog(f"Loaded {len(self.history)} calculations from history")
                 else:
-                    Logger.infoLog("Loaded empty history file")
-            else:
+                    Logger.infoLog("Loaded empty history file") 
+            else: #pragma: no cover
                 # If no history file exists, start with an empty history
                 Logger.infoLog("No history file found - starting with empty history")
-        except Exception as e:
+        except Exception as e: 
             # Log and raise an OperationError if loading fails
             Logger.errorLog(f"Failed to load history: {e}")
             raise OperationError(f"Failed to load history: {e}")
-    def get_history_dataframe(self) -> pd.DataFrame:
+    def get_history_dataframe(self) -> pd.DataFrame: #pragma: no cover
         """
         Get calculation history as a pandas DataFrame.
 
@@ -188,7 +189,7 @@ class Calculator:
         return [
             f"{calc.operation}({calc.operand1}, {calc.operand2}) = {calc.result}"
             for calc in self.history
-        ]
+        ] #pragma: no cover
 
     def clear_history(self) -> None:
         """

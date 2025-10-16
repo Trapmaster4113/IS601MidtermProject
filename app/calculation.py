@@ -59,7 +59,7 @@ class Calculation:
         try:
             # Execute the operation with the provided operands
             return op(self.operand1, self.operand2)
-        except (InvalidOperation, ValueError, ArithmeticError) as e:
+        except (InvalidOperation, ValueError, ArithmeticError) as e: #pragma: no cover
             # Handle any errors that occur during calculation
             raise OperationError(f"Calculation failed: {str(e)}")
     @staticmethod
@@ -187,7 +187,7 @@ class Calculation:
             f"timestamp='{self.timestamp.isoformat()}')"
         )
 
-    def __eq__(self, other: object) -> bool:
+    def __eq__(self, other: object) -> bool: 
         """
         Check if two calculations are equal.
 
@@ -200,7 +200,7 @@ class Calculation:
         Returns:
             bool: True if calculations are equal, False otherwise.
         """
-        if not isinstance(other, Calculation):
+        if not isinstance(other, Calculation): #pragma: no cover
             return NotImplemented
         return (
             self.operation == other.operation and

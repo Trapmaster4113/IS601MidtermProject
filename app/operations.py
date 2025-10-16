@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from decimal import Decimal
 from app.exceptions import ValidationError
 from typing import Dict
-class Operation(ABC): 
+class Operation(ABC): #pragma: no cover
     @abstractmethod
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
         pass

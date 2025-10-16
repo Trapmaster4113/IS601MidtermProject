@@ -67,7 +67,6 @@ def test_to_dict():
         "timestamp": calc.timestamp.isoformat()
     }
 
-
 def test_from_dict():
     data = {
         "operation": "add",
@@ -107,8 +106,22 @@ def test_equality():
     calc3 = Calculation(operation="sub", operand1=Decimal("5"), operand2=Decimal("3"))
     assert calc1 == calc2
     assert calc1 != calc3
-
-
+def test_false_equality():
+    calc1 = Calculation(operation="add", operand1=Decimal("2"), operand2=Decimal("3"))
+    fakeCalc = 2
+    assert (calc1 == fakeCalc) == False
+def test__str__():
+    calc1 = Calculation(operation="add", operand1=Decimal("2"), operand2=Decimal("3"))
+    assert str(calc1) == "add(2, 3) = 5"
+def test__repr__():
+    calc1 = Calculation(operation="add", operand1=Decimal("2"), operand2=Decimal("3"))
+    assert repr(calc1) == (
+            f"Calculation(operation='{calc1.operation}', "
+            f"operand1={calc1.operand1}, "
+            f"operand2={calc1.operand2}, "
+            f"result={calc1.result}, "
+            f"timestamp='{calc1.timestamp.isoformat()}')"
+        )
 # New Test to Cover Logging Warning
 def test_from_dict_result_mismatch(caplog):
     """

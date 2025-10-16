@@ -22,9 +22,6 @@ Version: 1.0
 
 
 
-from pathlib import Path
 from app.calculator_repl import Calculator_repl
-from app.logger import Logger
 if __name__ == "__main__":
-    Logger._setup_logging(Path(__file__).parent)
     Calculator_repl()
