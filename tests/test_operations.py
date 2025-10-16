@@ -184,8 +184,65 @@ class TestRoot(BaseOperationTest):
             "message": "Zero root is undefined"
         },
     }
-
-
+class TestMod(BaseOperationTest):
+    """Test Modulus Operation"""
+    operation_class = mod
+    valid_test_cases = {
+        "positive mod positive": {"a": "9", "b": "2", "expected": "1"},
+        "positive mod negative": {"a": "5", "b": "-2", "expected": "1"},
+        "negative mod positive": {"a": "-7", "b": "5", "expected": "-2"},
+        "negative mod negative": {"a": "-5", "b": "-2", "expected": "-1"},
+    }
+    invalid_test_cases = {
+        "zero mod": {"a": "9", 
+                     "b": "0",
+                     "error": ValidationError,
+                     "message": "Division by zero is not allowed"},
+    }
+class TestIDIV(BaseOperationTest):
+    """TEST Integer Division Operation"""
+    operation_class = idiv
+    valid_test_cases = {
+        "positive idiv positive": {"a": "9", "b": "2", "expected": "4"},
+        "positive idiv negative": {"a": "5", "b": "-2", "expected": "-3"},
+        "negative idiv positive": {"a": "-7", "b": "5", "expected": "-2"},
+        "negative idiv negative": {"a": "-5", "b": "-2", "expected": "2"},
+    }
+    invalid_test_cases = {
+        "divide_by_zero": {
+            "a": "5",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Division by zero is not allowed"
+        },
+    }
+class TestPerc(BaseOperationTest):
+    """TEST PERCENTAGE OPERATION"""
+    operation_class = perc
+    valid_test_cases = {
+        "positive perc positive": {"a": "10", "b": "100", "expected": "10"},
+        "positive perc negative": {"a": "10", "b": "-100", "expected": "-10"},
+        "negative perc positive": {"a": "-10", "b": "100", "expected": "-10"},
+        "negative perc negative": {"a": "-10", "b": "-100", "expected": "10"},
+    }
+    invalid_test_cases = {
+        "divide_by_zero": {
+            "a": "5",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Division by zero is not allowed"
+        },
+    }
+class TestAbsV(BaseOperationTest):
+    """TEST ABSOLUTE VALUE OPERATION"""
+    operation_class = absv
+    valid_test_cases = {
+        "positive perc positive": {"a": "10", "b": "100", "expected": "90"},
+        "positive perc negative": {"a": "10", "b": "-100", "expected": "110"},
+        "negative perc positive": {"a": "-10", "b": "100", "expected": "110"},
+        "negative perc negative": {"a": "-10", "b": "-100", "expected": "90"},
+    }
+    invalid_test_cases = {}  # ABSV has no invalid cases
 class TestOperationFactory:
     """Test OperationFactory functionality."""
 
