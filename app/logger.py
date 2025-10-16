@@ -1,7 +1,7 @@
 import logging
 from app.calculator_config import CalculatorConfig
 import os
-
+from app.color import Color
 class Logger:
     @staticmethod
     def _setup_logging(config: CalculatorConfig) -> None:
@@ -26,7 +26,7 @@ class Logger:
             Logger.infoLog(f"Logging initialized at: {log_file}")
         except Exception as e:
             # Print an error message and re-raise the exception if logging setup fails
-            print(f"Error setting up logging: {e}")
+            Color.printError(f"Error setting up logging: {e}")
             raise
     @staticmethod
     def infoLog(text: str) -> None:
