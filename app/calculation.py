@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 import datetime
 from decimal import Decimal, InvalidOperation
-import logging
+from app.logger import Logger
 from typing import Any, Dict
 
 from app.exceptions import OperationError
@@ -17,7 +17,6 @@ class Calculation:
     # Fields with default values
     result: Decimal = field(init=False)  # The result of the calculation, computed post-initialization
     timestamp: datetime.datetime = field(default_factory=datetime.datetime.now)  # Time when the calculation was performed
-
     def __post_init__(self):
         """
         Post-initialization processing.
@@ -148,7 +147,7 @@ class Calculation:
             # Verify the result matches (helps catch data corruption)
             saved_result = Decimal(data['result'])
             if calc.result != saved_result:
-                logging.warning(
+                Logger.warnLog(
                     f"Loaded calculation result {saved_result} "
                     f"differs from computed result {calc.result}"
                 )  # pragma: no cover

@@ -102,7 +102,7 @@ class CalculatorConfig:
             'CALCULATOR_HISTORY_FILE',
             str(self.history_dir / "calculator_history.csv")
         )).resolve()
-
+    
     @property
     def log_file(self) -> Path:
         """
