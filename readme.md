@@ -1,5 +1,5 @@
-Project Description: \n
-Calculator application with a history remembering. The Calculator's math functions include: \n
+Project Description: <br>
+Calculator application with a history remembering. The Calculator's math functions include: <br>
  - addition
  - subtraction
  - multiplication
@@ -9,7 +9,7 @@ Calculator application with a history remembering. The Calculator's math functio
  - integer division
  - modulus remainder
  - percentage
- - absolute difference\n
+ - absolute difference<br>
 Non-math functions of the Calculator include: 
  - history (displays the calculation history)
  - clear (clears calculation history)
@@ -18,19 +18,19 @@ Non-math functions of the Calculator include:
  - save (saves history into a file)
  - load (loads history from the file)
  - help (displays all available commands)
- - exit (closes the application)\n
+ - exit (closes the application)<br>
 Additional Calculator Features:
  - Messages in Color to help with readability
     - Red for errors
     - Blue for calculations
     - Green for history
-    - Yellow for undo/redo \n
+    - Yellow for undo/redo <br>
 To Install: 
 1. Clone github repository/Download repository
 2. Create Python Virtual Environment (python -m venv venv)
 3. Activate Python Virtual Environment (source venv/bin/activate)
 4. Install Python Packages (pip install -r requirements.txt)
-5. Run the application (python main.py)\n
+5. Run the application (python main.py)<br>
 Configuration Setup:
  - CALCULATOR_LOG_DIR=str (Creates a folder in the current directory with this name to store the logs file)
  - CALCULATOR_HISTORY_DIR=str (Creates a folder in the current director with this name to store the calculation history file)
@@ -38,10 +38,10 @@ Configuration Setup:
  - CALCULATOR_AUTO_SAVE=bool (Turns on or off the autosave feature of the calculator history)
  - CALCULATOR_PRECISION=int (How many digits after the decimal point the calculator will calculate to)
  - CALCULATOR_MAX_INPUT_VALUE=int (Maximum number size that can be input into the calculator)
- - CALCULATOR_DEFAULT_ENCODING=utf-8 (Default coding language DO NOT CHANGE)\n
+ - CALCULATOR_DEFAULT_ENCODING=utf-8 (Default coding language DO NOT CHANGE)<br>
 Usage Guide:
  - After setting everything up type into the terminal "python main.py"
- - Then, type any of the above functions to interact with the Calculator application\n
+ - Then, type any of the above functions to interact with the Calculator application<br>
 Testing Instructions
  - Run pytest after installing all Python Dependencies
  - Test logs stored in test_logs
